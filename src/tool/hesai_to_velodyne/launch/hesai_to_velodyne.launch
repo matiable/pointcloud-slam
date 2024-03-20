@@ -1,0 +1,16 @@
+<launch>
+
+<node pkg="hesai_to_velodyne" type="hesai_to_velodyne" name="hesai_to_velodyne_node" output="screen" required="true">
+  <param name = "input_type" type = "int" value="2"/>
+  <param name = "output_type" type ="int" value="2" />     <!-- 0 ="XYZI"   1 ="XYZIR" 2 ="XYZIRT" -->
+</node>
+<node pkg="tf2_ros" type="static_transform_publisher" name="base2velodyne" args="0.31 0 0.123 0 0 0 base_link velodyne" respawn="true"/>
+</launch>
+
+
+
+
+
+
+
+

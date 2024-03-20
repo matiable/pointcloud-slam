@@ -1,0 +1,33 @@
+occupancy_mapping_2D:
+  pub_map_topic: "projected_map"
+  min_z: -0.15       # 转化的z轴高度，相对于传感器中心
+  max_z: 1.5
+  angle_increment: 0.006 # 角度间隔(弧度制)
+  min_range: 0.5      # 传感器的有效距离范围（用于去除过近或过远的点）
+  max_range: 200
+  log_free: -0.01      #珊格空闲时的更新值
+  log_occ: 0.1       #珊格被占用时的更新值
+  resolution: 0.1     # 地图分辨率
+  max_radius: 20      # 转化为栅格地图时的范围（只更新本范围内的点，范围外的栅格保持未知）
+  fill_with_white: true     # 传感器打到的点超出max_radius时，光线上的栅格是否填充为白色？（推荐为true）
+  use_nan: false            # 是否使用nan点（若使用，nan点距离设置为max_radius+0.1）（由于超出传感器范围的点，无论是过近或是过远或是其他，都设置为nan，推荐为false）
+
+
+
+# 在线建图
+  lidar_type: 0                       #0: sensor_msgs/PointCloud2       1: livox_ros_driver2/CustomMsg
+  pointcloud_topic: "/lidar_points"
+  odom_topic: "/Odometry"            #点云坐标系相对于固定坐标系（map）的里程计数据
+  time_threshold: 0.01
+  use_tf_transforms: true         # true: 使用tf   false: 使用里程计话题
+  map_frame: "map"
+  body_frame: "base_link"
+  sensor_frame: "lidar_link"
+  # map_save_path: "/home/ysc/jy_cog/system/map/"
+  # map_save_name: "jueying"
+
+# 离线建图
+  use_file_num: 1     # 使用的文件（夹）数量，最多两个
+  data_file_1: "/home/ysc/jy_cog/system/maps/default/details/frames/"
+  data_file_2: "/home/ysc/jy_cog/system/maps/default/details/frames/"
+  pose_file: "/home/ysc/jy_cog/system/maps/default/details/poses.txt"    #位姿存储文件，每行存储齐次变换矩阵的前三行共12个数

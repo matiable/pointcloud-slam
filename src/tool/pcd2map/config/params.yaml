@@ -1,0 +1,5 @@
+pcd2map: 
+  minh: 0.1
+  maxh: 1.0
+  leaf_size: 0.1
+  pcd_file: "/home/ysc/jy_cog/system/map/jueying.pcd"

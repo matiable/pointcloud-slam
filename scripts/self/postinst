@@ -1,0 +1,22 @@
+# !/bin/sh
+home_path=/home/ysc
+
+bash $home_path/jy_cog/slam/scripts/register_conf.sh
+
+echo "----------- Map Backup -----------"
+
+if [ -L "/home/ysc/jy_cog/system/map" ]; then
+    echo "map是一个软链接。"
+else
+    echo "map不是软链接"
+    date_time=$(date +"%Y%m%d-%H%M%S")
+    mkdir -p $home_path/jy_cog/system/maps/default-$date_time
+    mv $home_path/jy_cog/system/map/* $home_path/jy_cog/system/maps/default-$date_time
+    rm -rf $home_path/jy_cog/system/map
+    ln -s $home_path/jy_cog/system/maps/default-$date_time $home_path/jy_cog/system/map
+    chmod -R 777 $home_path/jy_cog/system/maps
+fi
+
+
+
+

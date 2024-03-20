@@ -1,0 +1,23 @@
+<launch>
+
+    <arg name="project" default="jueying_slam"/>
+    
+
+    <!-- Parameters -->
+    <rosparam file="$(find jueying_slam)/config/params.yaml" command="load" />
+    <!--- Run lidar -->
+    <!--<include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>-->
+    <!--- Run imu -->
+    <!--<include file="$(find message_transformer_cpp)/launch/message_transformer_cpp.launch"/>-->
+    <include file="$(find occupancy_mapping)/launch/occupancy_mapping.launch"/>
+
+    <include file="$(find jueying_slam)/launch/include/module_loam.launch" />
+
+    <!--- Robot State TF -->
+    <!-- <include file="$(find jueying_slam)/launch/include/module_robot_state_publisher.launch" /> -->
+
+    <!--- Run Rviz-->
+    <!--<node pkg="rviz" type="rviz" name="$(arg project)_rviz" args="-d $(find jueying_slam)/launch/include/config/mapping.rviz" /> -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="lidar_broadcaster" args="0.31 0 0.123 0 0 0 base_link velodyne" respawn="true"/>
+
+</launch>

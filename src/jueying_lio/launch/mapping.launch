@@ -1,0 +1,43 @@
+<launch>
+    <!-- Launch file for velodyne16 VLP-16 LiDAR -->
+
+    <arg name="enable_rviz" default="false" />
+    <arg name="scene" default="fast" />
+    <arg name="lidar_type" default="livox" />
+    <param name="/use_sim_time" value="false" />
+    <arg name="map_path" default="/home/ysc/jy_cog/system/maps/default" />
+
+    <!-- <rosparam command="load" file="$(find jueying_lio)/config/$(arg lidar_type).yaml" /> -->
+    <rosparam file="/home/ysc/jy_cog/system/conf/slam/jueying_lio/params.yaml" command="load" />
+
+    <group if="$(eval arg('scene') == 'odom')">
+        <param name="/pcd_save/pcd_save_en" type="bool" value="0" />
+    </group>
+
+    <group if="$(eval arg('scene') == 'fast')">
+        <param name="/pcd_save/pcd_save_en" type="bool" value="1" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="map_2_camerainit" args="0 0 0 0 0 0 map camera_init" respawn="true" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="body_2_base" args="0.1713 0 0.05925 0 0 0 body base_link" respawn="true" />
+    </group>
+    <group if="$(eval arg('scene') == 'indoor')">
+        <param name="/pcd_save/pcd_save_en" type="bool" value="0" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="map_2_camerainit" args="0 0 0 0 0 0 map camera_init" respawn="true" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="body_2_base" args="0.1713 0 0.05925 0 0 0 body base_link" respawn="true" />
+    </group>
+    <group if="$(eval arg('scene') == 'outdoor')">
+        <param name="/pcd_save/pcd_save_en" type="bool" value="0" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="map_2_camerainit" args="0 0 0 0 0 0 map camera_init" respawn="true" />
+        <node pkg="tf2_ros" type="static_transform_publisher" name="body_2_base" args="0.1713 0 0.05925 0 0 0 body base_link" respawn="true" />
+    </group>
+    <param name="map_file_path" type="string" value="$(arg map_path)" />
+    <param name="runtime_pos_log_enable" type="bool" value="0" />
+
+    <node pkg="jueying_lio" type="run_mapping_online" name="laserMapping" output="screen" />
+
+
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="base_2_rslidar" args="0.31 0 0.123 0 0 0 base_link rslidar" respawn="true"/> -->
+    <group if="$(arg enable_rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find jueying_lio)/rviz_cfg/loam_livox.rviz" />
+    </group>
+
+</launch>

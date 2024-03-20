@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+	<rosparam file="$(find myfusion)/config/fusion_param.yaml" command="load" />
+
+
+
+	<node name ="fusion_lidar_camera" pkg="myfusion" type="fusion_lidar_camera" output="screen"/>
+</launch>
+
+

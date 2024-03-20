@@ -1,0 +1,18 @@
+<launch>
+    <arg name="map_save_path" default="/home/ysc/jy_cog/system/maps/default" />
+    <arg name="map_save_name" default="jueying" />
+    <arg name="pose_file_path" default="/home/ysc/jy_cog/system/maps/default/details/poses_opt.txt" />
+    <arg name="label_file_path" default="/home/ysc/jy_cog/system/maps/default/details/labels.txt" />
+    <arg name="use_topic" default="true" />
+    <!-- <arg name="lidar_msg_type" default="0" /> -->
+    <param name="/use_sim_time" value="false" />
+    <param name="/occupancy_mapping_2D/use_topic" value="$(arg use_topic)" />		<!-- true为使用话题在线建图，false为使用保存的关键帧点云离线建图 -->
+    <!-- <rosparam file="$(find occupancy_mapping)/config/param.yaml" command="load" /> -->
+    <rosparam file="/home/ysc/jy_cog/system/conf/slam/occupancy_mapping/params.yaml" command="load" />
+    <param name="occupancy_mapping_2D/map_save_path" type="string" value="$(arg map_save_path)" />
+    <param name="occupancy_mapping_2D/map_save_name" type="string" value="$(arg map_save_name)" />
+    <param name="occupancy_mapping_2D/pose_file" type="string" value="$(arg pose_file_path)" />
+    <param name="occupancy_mapping_2D/label_file" type="string" value="$(arg label_file_path)" />
+    <!-- <param name="occupancy_mapping_2D/lidar_type" type="int" value="$(arg lidar_msg_type)" /> -->
+    <node name="occupancy_mapping_node" pkg="occupancy_mapping" type="mapping_server_node" output="screen" />
+</launch>
